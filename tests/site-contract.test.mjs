@@ -77,6 +77,21 @@ test('uses semantic sections and an accessible portrait', async () => {
   assert.match(html, /<nav[^>]+aria-label="Primary"/);
 });
 
+test('uses the original portrait as an engineering identity plate', async () => {
+  const [html, css] = await Promise.all([
+    readFile('index.html', 'utf8'),
+    readFile('styles.css', 'utf8'),
+  ]);
+
+  assert.match(html, /class="identity-plate\b/);
+  assert.match(html, /src="assets\/profile\.jpg"/);
+  assert.match(html, /class="identity-name">SHAN YE<\/span>/);
+  assert.match(html, /DISTRIBUTED SYSTEMS \/ CLOUD INFRASTRUCTURE/);
+  assert.match(html, /<svg[^>]+aria-hidden="true"/);
+  assert.match(css, /\.identity-orbit[^}]*border-radius: 50%/s);
+  assert.match(css, /\.identity-name/);
+});
+
 test('provides responsive, accessible Signal Architecture styling', async () => {
   const css = await readFile('styles.css', 'utf8');
 
