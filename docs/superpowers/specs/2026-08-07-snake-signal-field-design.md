@@ -6,7 +6,7 @@ Make Snake more challenging and dynamic by replacing the single eat-then-respawn
 
 ## Player experience
 
-- The game-over dialog title changes from `Snake expired` to **System breach**.
+- The game-over dialog becomes a software-engineering incident alert: a large amber `⚠` warning symbol, eyebrow `ALERT / SECURITY BREACH`, and title **Security breach**. The existing final-score readout and **Try again** / **Game menu** actions remain.
 - A new run begins with three randomly placed items.
 - The board always contains at least one and no more than ten items.
 - Items independently remain for approximately 5–10 seconds, then disappear. New items appear at random board locations roughly every 1–3 seconds while the field is below ten items.
@@ -29,9 +29,10 @@ The game menu remains an overlay inside the existing full-size game board. The S
 - Item expiration is based on wall-clock time rather than number of game ticks, so the 5–10 second pacing remains stable as the snake accelerates.
 - No additional controls or telemetry are added.
 - Keep the full-board Start overlay, responsive canvas sizing, and reduced-motion behavior intact.
+- Use the existing amber warning color for the incident symbol and alert label so the alert is high-contrast without introducing a new visual system.
 
 ## Verification
 
 - Add deterministic engine tests for initial three-item creation, non-overlapping placement, independent expiry and replenishment, the one-to-ten boundary, and eating one item while preserving others.
-- Add static page contracts for the System breach title and the existing full-board menu structure.
+- Add static page contracts for the Security breach alert treatment and the existing full-board menu structure.
 - Run the full Node test suite, `git diff --check`, and inspect the visible full-board menu plus multiple rendered items.
