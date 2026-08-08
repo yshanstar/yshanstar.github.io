@@ -6,7 +6,7 @@ Add a standalone, browser-playable Snake page to the professional website withou
 
 ## Scope
 
-- New route: `snake.html`.
+- New route: `snake.html`, discoverable from the existing top navigation as `Snake`.
 - New isolated assets: `snake.css` and `snake.js`.
 - Existing home page markup and content are unchanged.
 - The page has a clear route back to the main profile.
@@ -35,16 +35,18 @@ The selected layout is **Arcade Terminal**:
 - Eating either item type triggers a short, reduced-motion-safe visual animation: mint expansion feedback for growth and amber contraction feedback for shrinkage.
 - Contact between the head and any body segment ends the run.
 - A terminated run displays a clear status and can be restarted without reloading the page.
+- A terminated run freezes the board and opens a terminal-style overlay with the final score, `Try again`, and `Game menu` controls. `Try again` starts a new run; `Game menu` returns to an in-page start screen rather than the profile page.
 
 ## Architecture
 
-`snake.html` supplies semantic page structure, score/status outputs, canvas, restart control, and accessible touch buttons. `snake.css` supplies page-specific layout and shares the existing design token values rather than modifying `styles.css`. `snake.js` owns rendering, input wiring, timing, and a testable `SnakeGame` rules module.
+`snake.html` supplies semantic page structure, score/status outputs, canvas, an in-page game menu, a game-over terminal overlay, restart controls, and accessible touch buttons. `snake.css` supplies page-specific layout and shares the existing design token values; `styles.css` is amended only to fit the added top-navigation link. `snake.js` owns rendering, input wiring, timing, menus, overlay state, and a testable `SnakeGame` rules module.
 
 The module state includes the ordered snake cells, current direction, one queued direction, item cell and type, score, movement interval, status, and a short item-effect animation state. A single scheduled tick advances the state, detects collision, handles wrapping and item consumption, updates the telemetry, then renders the board.
 
 ## Accessibility and responsive behavior
 
 - Canvas has a descriptive label; live score/status text is exposed outside the canvas.
+- Opening the game-over overlay moves keyboard focus to its `Try again` control. The overlay exposes its score and choices through semantic controls.
 - Buttons have accessible direction labels and are at least 44px in each dimension.
 - Keyboard controls work when the page is not inside a form field.
 - The board uses the available content width and preserves a stable aspect ratio.
@@ -52,4 +54,4 @@ The module state includes the ordered snake cells, current direction, one queued
 
 ## Testing
 
-Automated tests validate wrapping, opposite-turn rejection, fixed good-item growth, randomized bad-item shrinkage with a two-segment minimum, score/speed behavior, item placement outside the snake, and self-collision. A static-page contract validates the new page and required assets without changing the current homepage. Manual browser checks cover keyboard controls, touch buttons, responsive board sizing, good/bad item effects, restart, and the back link.
+Automated tests validate wrapping, opposite-turn rejection, fixed good-item growth, randomized bad-item shrinkage with a two-segment minimum, score/speed behavior, item placement outside the snake, and self-collision. A static-page contract validates the new page and required assets, game-menu/overlay controls, and the one added home-navigation link. Manual browser checks cover keyboard controls, touch buttons, responsive board sizing, good/bad item effects, termination overlay, try-again flow, game-menu flow, and the back link.
