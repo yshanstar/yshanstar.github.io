@@ -35,3 +35,17 @@ test('uses semantic sections and an accessible portrait', async () => {
   assert.match(html, /<button[^>]+class="menu-toggle"[^>]+aria-expanded="false"/);
   assert.match(html, /<nav[^>]+aria-label="Primary"/);
 });
+
+test('provides responsive, accessible Signal Architecture styling', async () => {
+  const css = await readFile('styles.css', 'utf8');
+
+  for (const token of [
+    '--ink:',
+    '--signal:',
+    '@media (max-width:',
+    '@media (prefers-reduced-motion: reduce)',
+    ':focus-visible',
+  ]) {
+    assert.match(css, new RegExp(token.replace(/[()]/g, '\\$&')));
+  }
+});
