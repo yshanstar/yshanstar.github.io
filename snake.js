@@ -8,6 +8,12 @@ const speedOutput = document.querySelector('#snake-speed');
 const statusOutput = document.querySelector('#snake-status');
 const message = document.querySelector('#game-message');
 const restartButton = document.querySelector('#restart-game');
+const gameMenu = document.querySelector('#game-menu');
+const gameOver = document.querySelector('#game-over');
+const startButton = document.querySelector('#start-game');
+const playAgainButton = document.querySelector('#play-again');
+const returnMenuButton = document.querySelector('#return-menu');
+const finalScore = document.querySelector('#final-score');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let state = createGame();
@@ -89,19 +95,41 @@ function tick() {
   draw();
   updateTelemetry();
   animateEffect(state.effect);
-  scheduleTick();
+  if (state.status === 'terminated') {
+    finalScore.value = String(state.score).padStart(3, '0');
+    setMode('terminated');
+  } else {
+    scheduleTick();
+  }
 }
 
 function requestDirection(direction) {
+  if (state.status !== 'running') return;
   state = queueDirection(state, direction);
 }
 
-function restart() {
+function setMode(mode) {
+  gameMenu.hidden = mode !== 'menu';
+  shell.hidden = mode === 'menu';
+  gameOver.hidden = mode !== 'terminated';
+
+  if (mode === 'terminated') window.setTimeout(() => playAgainButton.focus(), 0);
+}
+
+function startRun() {
+  window.clearTimeout(timerId);
   state = createGame();
+  setMode('running');
   fitCanvas();
   draw();
   updateTelemetry();
   scheduleTick();
+  canvas.focus();
+}
+
+function returnToMenu() {
+  window.clearTimeout(timerId);
+  setMode('menu');
 }
 
 const keyDirections = {
@@ -122,11 +150,41 @@ document.querySelectorAll('.direction-pad button').forEach((button) => {
   button.addEventListener('click', () => requestDirection(button.id.replace('direction-', '')));
 });
 
-restartButton.addEventListener('click', restart);
+let touchStart = null;
+let swipeResolved = false;
+
+canvas.addEventListener('touchstart', (event) => {
+  const touch = event.touches[0];
+  touchStart = { x: touch.clientX, y: touch.clientY };
+  swipeResolved = false;
+}, { passive: true });
+
+canvas.addEventListener('touchmove', (event) => {
+  if (!touchStart) return;
+  const touch = event.touches[0];
+  const deltaX = touch.clientX - touchStart.x;
+  const deltaY = touch.clientY - touchStart.y;
+  const distance = Math.max(Math.abs(deltaX), Math.abs(deltaY));
+
+  if (!swipeResolved && distance >= 24) {
+    requestDirection(Math.abs(deltaX) > Math.abs(deltaY) ? (deltaX > 0 ? 'right' : 'left') : (deltaY > 0 ? 'down' : 'up'));
+    swipeResolved = true;
+  }
+
+  if (swipeResolved) event.preventDefault();
+}, { passive: false });
+
+canvas.addEventListener('touchend', () => { touchStart = null; swipeResolved = false; });
+canvas.addEventListener('touchcancel', () => { touchStart = null; swipeResolved = false; });
+
+restartButton.addEventListener('click', startRun);
+startButton.addEventListener('click', startRun);
+playAgainButton.addEventListener('click', startRun);
+returnMenuButton.addEventListener('click', returnToMenu);
 window.addEventListener('resize', () => {
   fitCanvas();
   draw();
 });
 
-window.__snakeGame = { get state() { return state; }, restart, requestDirection };
-restart();
+window.__snakeGame = { get state() { return state; }, startRun, returnToMenu, requestDirection };
+setMode('menu');

@@ -129,3 +129,11 @@ test('links the home navigation to Snake and supplies accessible game modes', as
   assert.match(snake, /id="play-again"/);
   assert.match(snake, /id="return-menu"/);
 });
+
+test('implements terminal mode and deliberate board swipe steering', async () => {
+  const js = await readFile('snake.js', 'utf8');
+
+  for (const token of ['setMode', 'returnToMenu', 'touchstart', 'touchmove', 'touchend', 'preventDefault', 'play-again']) {
+    assert.match(js, new RegExp(token));
+  }
+});
