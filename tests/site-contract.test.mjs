@@ -137,3 +137,12 @@ test('implements terminal mode and deliberate board swipe steering', async () =>
     assert.match(js, new RegExp(token));
   }
 });
+
+test('styles the terminal overlay and thumb-friendly mobile controls', async () => {
+  const css = await readFile('snake.css', 'utf8');
+
+  assert.match(css, /\.game-over/);
+  assert.match(css, /\.game-menu/);
+  assert.match(css, /min-width: 52px/);
+  assert.match(css, /touch-action: pan-y/);
+});
