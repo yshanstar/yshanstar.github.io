@@ -58,7 +58,9 @@ h1 span { color: var(--signal); font-family: var(--mono); font-size: .4em; lette
 .menu-button { background: transparent; border: 1px solid var(--line); color: var(--text); cursor: pointer; font-family: var(--body); font-size: .82rem; font-weight: 700; min-height: 44px; padding: .65rem 1rem; }
 .menu-button:hover { border-color: var(--text); }
 
-.game-menu { background: linear-gradient(145deg, rgba(16, 36, 58, .95), rgba(13, 28, 46, .98)); border: 1px solid var(--line); margin: auto; max-width: 260px; padding: clamp(2rem, 6vw, 3.5rem); text-align: center; }
+.game-menu { align-items: center; aspect-ratio: 1; background: rgba(7, 17, 31, .55); display: flex; inset: 0 auto auto 0; justify-content: center; position: absolute; width: 100%; }
+.game-menu .restart-button { background: var(--surface); box-shadow: 0 0 0 6px rgba(68, 215, 168, .08); }
+.game-shell[data-mode="menu"] .telemetry, .game-shell[data-mode="menu"] .game-message, .game-shell[data-mode="menu"] #restart-game { display: none; }
 .game-over h2 { font-family: var(--display); font-size: clamp(2.4rem, 6vw, 4rem); letter-spacing: -.04em; line-height: 1; margin: 0 0 1rem; }
 .game-over-panel > p { color: var(--muted); margin: 0 auto 1.5rem; max-width: 34rem; }
 

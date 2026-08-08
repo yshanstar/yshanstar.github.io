@@ -21,12 +21,11 @@
         <p>Collect mint signals to grow. Avoid amber noise or lose segments. Use Arrow keys or W/A/S/D to steer, or swipe the board on mobile.</p>
       </section>
 
-      <section id="game-menu" class="game-menu" aria-label="Start Snake game">
-        <button id="start-game" class="restart-button" type="button">Start</button>
-      </section>
-
-      <section class="game-shell" aria-label="Snake game" hidden>
+      <section class="game-shell" aria-label="Snake game">
         <canvas id="game-board" width="800" height="800" role="img" aria-label="Snake game board" tabindex="0">Your browser does not support the Snake game board.</canvas>
+        <section id="game-menu" class="game-menu" aria-label="Start Snake game">
+          <button id="start-game" class="restart-button" type="button">Start</button>
+        </section>
         <div class="telemetry" aria-label="Game telemetry">
           <div><span>SCORE</span><output id="snake-score">000</output></div>
           <div><span>SPEED</span><output id="snake-speed">01</output></div>

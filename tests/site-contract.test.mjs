@@ -171,3 +171,18 @@ test('styles the terminal overlay and swipe-only mobile play', async () => {
   assert.match(css, /touch-action: pan-y/);
   assert.doesNotMatch(css, /\.direction-pad/);
 });
+
+test('places the Start menu over the visible Snake board', async () => {
+  const snake = await readFile('snake.html', 'utf8');
+
+  assert.match(snake, /<section class="game-shell"[^>]*>[\s\S]*id="game-board"[\s\S]*id="game-menu"/);
+  assert.doesNotMatch(snake, /<section id="game-menu"[\s\S]*<section class="game-shell"/);
+});
+
+test('renders a static board preview while the Snake menu is open', async () => {
+  const [css, js] = await Promise.all([readFile('snake.css', 'utf8'), readFile('snake.js', 'utf8')]);
+
+  assert.match(css, /\.game-menu[^{]*\{[^}]*position: absolute/s);
+  assert.match(js, /if \(mode === 'menu'\) \{[\s\S]*fitCanvas\(\);[\s\S]*draw\(\);/);
+  assert.doesNotMatch(js, /shell\.hidden = mode === 'menu'/);
+});

@@ -110,8 +110,15 @@ function requestDirection(direction) {
 
 function setMode(mode) {
   gameMenu.hidden = mode !== 'menu';
-  shell.hidden = mode === 'menu';
+  shell.dataset.mode = mode;
+  shell.hidden = false;
   gameOver.hidden = mode !== 'terminated';
+
+  if (mode === 'menu') {
+    fitCanvas();
+    draw();
+    window.setTimeout(() => startButton.focus(), 0);
+  }
 
   if (mode === 'terminated') window.setTimeout(() => playAgainButton.focus(), 0);
 }
@@ -129,6 +136,7 @@ function startRun() {
 
 function returnToMenu() {
   window.clearTimeout(timerId);
+  state = createGame();
   setMode('menu');
 }
 
