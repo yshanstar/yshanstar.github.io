@@ -183,7 +183,10 @@ test('renders a static board preview while the Snake menu is open', async () => 
   const [css, js] = await Promise.all([readFile('snake.css', 'utf8'), readFile('snake.js', 'utf8')]);
 
   assert.match(css, /\.game-menu[^{]*\{[^}]*position: absolute/s);
-  assert.match(js, /if \(mode === 'menu'\) \{[\s\S]*fitCanvas\(\);[\s\S]*draw\(\);/);
+  assert.match(js, /function draw\(\{ entities = true \} = \{\}\)/);
+  assert.match(js, /if \(mode === 'menu'\) \{[\s\S]*fitCanvas\(\);[\s\S]*draw\(\{ entities: false \}\)/);
+  assert.match(js, /window\.addEventListener\('resize'[\s\S]*draw\(\{ entities: shell\.dataset\.mode !== 'menu' \}\)/);
+  assert.match(css, /\.game-menu \.restart-button[^{]*\{[^}]*min-width: 220px/s);
   assert.doesNotMatch(js, /shell\.hidden = mode === 'menu'/);
 });
 

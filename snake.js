@@ -32,7 +32,7 @@ function fitCanvas() {
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
-function draw() {
+function draw({ entities = true } = {}) {
   const size = canvas.getBoundingClientRect().width;
   const unit = cellSize();
   context.clearRect(0, 0, size, size);
@@ -51,19 +51,21 @@ function draw() {
     context.stroke();
   }
 
-  state.items.forEach((item) => {
-    const centerX = (item.x + .5) * unit;
-    const centerY = (item.y + .5) * unit;
-    context.fillStyle = item.type === 'good' ? '#44d7a8' : '#f6ce71';
-    context.beginPath();
-    context.arc(centerX, centerY, unit * .24, 0, Math.PI * 2);
-    context.fill();
-  });
+  if (entities) {
+    state.items.forEach((item) => {
+      const centerX = (item.x + .5) * unit;
+      const centerY = (item.y + .5) * unit;
+      context.fillStyle = item.type === 'good' ? '#44d7a8' : '#f6ce71';
+      context.beginPath();
+      context.arc(centerX, centerY, unit * .24, 0, Math.PI * 2);
+      context.fill();
+    });
 
-  state.snake.forEach((cell, index) => {
-    context.fillStyle = index === 0 ? '#e8f1fb' : '#44d7a8';
-    context.fillRect(cell.x * unit + 2, cell.y * unit + 2, unit - 4, unit - 4);
-  });
+    state.snake.forEach((cell, index) => {
+      context.fillStyle = index === 0 ? '#e8f1fb' : '#44d7a8';
+      context.fillRect(cell.x * unit + 2, cell.y * unit + 2, unit - 4, unit - 4);
+    });
+  }
 }
 
 function updateTelemetry() {
@@ -116,7 +118,7 @@ function setMode(mode) {
 
   if (mode === 'menu') {
     fitCanvas();
-    draw();
+    draw({ entities: false });
     window.setTimeout(() => startButton.focus(), 0);
   }
 
@@ -187,7 +189,7 @@ playAgainButton.addEventListener('click', startRun);
 returnMenuButton.addEventListener('click', returnToMenu);
 window.addEventListener('resize', () => {
   fitCanvas();
-  draw();
+  draw({ entities: shell.dataset.mode !== 'menu' });
 });
 
 window.__snakeGame = { get state() { return state; }, startRun, returnToMenu, requestDirection };

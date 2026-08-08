@@ -59,7 +59,7 @@ h1 span { color: var(--signal); font-family: var(--mono); font-size: .4em; lette
 .menu-button:hover { border-color: var(--text); }
 
 .game-menu { align-items: center; aspect-ratio: 1; background: rgba(7, 17, 31, .55); display: flex; inset: 0 auto auto 0; justify-content: center; position: absolute; width: 100%; }
-.game-menu .restart-button { background: var(--surface); box-shadow: 0 0 0 6px rgba(68, 215, 168, .08); }
+.game-menu .restart-button { background: var(--surface); box-shadow: 0 0 0 6px rgba(68, 215, 168, .08); min-width: 220px; padding: 2rem 3.5rem; }
 .game-shell[data-mode="menu"] .telemetry, .game-shell[data-mode="menu"] .game-message, .game-shell[data-mode="menu"] #restart-game { display: none; }
 .warning-symbol { color: var(--warning); display: block; font-family: var(--mono); font-size: clamp(3rem, 8vw, 5rem); line-height: 1; margin-bottom: 1rem; }
 .game-over-panel .eyebrow { color: var(--warning); }
