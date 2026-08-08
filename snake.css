@@ -42,6 +42,7 @@ h1 span { color: var(--signal); font-family: var(--mono); font-size: .4em; lette
 
 .game-shell { margin: auto; max-width: 800px; position: relative; text-align: center; }
 #game-board { background: var(--surface); border: 1px solid var(--line); display: block; height: auto; max-width: 800px; touch-action: pan-y; width: 100%; }
+.game-shell[data-mode="running"] #game-board { touch-action: none; }
 .game-shell.effect-growth #game-board { animation: signal-flash .38s ease-out; }
 .game-shell.effect-shrink #game-board { animation: warning-flash .38s ease-out; }
 @keyframes signal-flash { 50% { box-shadow: 0 0 0 5px rgba(68, 215, 168, .32), 0 0 36px rgba(68, 215, 168, .35); } }

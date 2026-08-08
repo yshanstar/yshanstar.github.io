@@ -199,3 +199,12 @@ test('uses a software-engineering Security breach alert', async () => {
   assert.match(css, /\.warning-symbol/);
   assert.match(css, /color: var\(--warning\)/);
 });
+
+test('locks touch scrolling only while Snake is running', async () => {
+  const [css, js] = await Promise.all([readFile('snake.css', 'utf8'), readFile('snake.js', 'utf8')]);
+
+  assert.match(css, /#game-board[^}]*touch-action: pan-y/);
+  assert.match(css, /\.game-shell\[data-mode="running"\] #game-board[^}]*touch-action: none/);
+  assert.match(js, /canvas\.addEventListener\('touchstart'[\s\S]*state\.status === 'running'[\s\S]*event\.preventDefault\(\)/);
+  assert.match(js, /canvas\.addEventListener\('touchmove'[\s\S]*state\.status === 'running'[\s\S]*event\.preventDefault\(\)/);
+});

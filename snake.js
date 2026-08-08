@@ -160,13 +160,15 @@ let touchStart = null;
 let swipeResolved = false;
 
 canvas.addEventListener('touchstart', (event) => {
+  if (state.status === 'running') event.preventDefault();
   const touch = event.touches[0];
   touchStart = { x: touch.clientX, y: touch.clientY };
   swipeResolved = false;
-}, { passive: true });
+}, { passive: false });
 
 canvas.addEventListener('touchmove', (event) => {
   if (!touchStart) return;
+  if (state.status === 'running') event.preventDefault();
   const touch = event.touches[0];
   const deltaX = touch.clientX - touchStart.x;
   const deltaY = touch.clientY - touchStart.y;
@@ -177,7 +179,6 @@ canvas.addEventListener('touchmove', (event) => {
     swipeResolved = true;
   }
 
-  if (swipeResolved) event.preventDefault();
 }, { passive: false });
 
 canvas.addEventListener('touchend', () => { touchStart = null; swipeResolved = false; });
