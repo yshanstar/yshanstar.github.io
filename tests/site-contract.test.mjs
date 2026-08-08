@@ -17,11 +17,27 @@ test('ships the complete static site contract', async () => {
     assert.match(html, new RegExp(`href="${anchor}"|id="${anchor.slice(1)}"`));
   }
 
-  assert.match(html, /Engineering systems that make cloud move\./);
+  assert.match(html, /Building reliable cloud systems/);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/shanye\//);
   assert.match(html, /target="_blank"/);
   assert.match(html, /rel="noreferrer"/);
   assert.doesNotMatch(html, /yshanstar1988@gmail\.com|415.?684.?3217|Oracle|Microsoft|Amazon/);
+});
+
+test('uses concise, clear display headlines', async () => {
+  const html = await readFile('index.html', 'utf8');
+
+  for (const headline of [
+    'Building reliable cloud systems',
+    'Systems that keep their promises',
+    'Scale. Ownership. Change',
+    'Built for critical systems',
+    'Let’s talk systems',
+  ]) {
+    assert.match(html, new RegExp(headline.replace(/[.]/g, '\\$&')));
+  }
+
+  assert.doesNotMatch(html, /Engineering systems that make cloud move\./);
 });
 
 test('uses semantic sections and an accessible portrait', async () => {
