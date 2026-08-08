@@ -96,7 +96,7 @@ test('ships an accessible standalone Snake game page without touching the home p
   assert.match(snake, /<button[^>]+id="direction-up"[^>]+aria-label="Move up"/);
   assert.match(snake, /id="snake-score"/);
   assert.match(snake, /href="index\.html"/);
-  assert.doesNotMatch(home, /snake\.html|Snake game/);
+  assert.doesNotMatch(home, /id="game-board"|Snake game/);
 });
 
 test('includes responsive touch controls and module-based Snake behavior', async () => {
@@ -116,4 +116,16 @@ test('documents the Snake route', async () => {
   assert.match(readme, /snake\.html/);
   assert.match(readme, /Arrow keys/);
   assert.match(readme, /W\/A\/S\/D/);
+});
+
+test('links the home navigation to Snake and supplies accessible game modes', async () => {
+  const [home, snake] = await Promise.all([readFile('index.html', 'utf8'), readFile('snake.html', 'utf8')]);
+
+  assert.match(home, /<a href="snake\.html">Snake<\/a>/);
+  assert.match(snake, /<h1 id="game-title">Snake<\/h1>/);
+  assert.match(snake, /id="game-menu"/);
+  assert.match(snake, /id="start-game"/);
+  assert.match(snake, /id="game-over"[^>]+role="dialog"[^>]+aria-modal="true"/);
+  assert.match(snake, /id="play-again"/);
+  assert.match(snake, /id="return-menu"/);
 });
