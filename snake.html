@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A browser-playable Snake game by Shan Ye.">
-    <title>Snake // Arcade Terminal — Shan Ye</title>
+    <title>Snake — Shan Ye</title>
     <link rel="stylesheet" href="snake.css">
     <script type="module" src="snake.js"></script>
   </head>
@@ -18,14 +18,11 @@
       <section class="game-intro" aria-labelledby="game-title">
         <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> SYSTEM TEST / LIVE</p>
         <h1 id="game-title">Snake</h1>
-        <p>Collect mint signals to grow. Avoid amber noise or lose segments. Use Arrow keys or W/A/S/D to steer.</p>
+        <p>Collect mint signals to grow. Avoid amber noise or lose segments. Use Arrow keys or W/A/S/D to steer, or swipe the board on mobile.</p>
       </section>
 
-      <section id="game-menu" class="game-menu" aria-labelledby="menu-title">
-        <p class="eyebrow">READY / NEW RUN</p>
-        <h2 id="menu-title">Arcade Terminal</h2>
-        <p>Swipe directly on the board to steer on touch devices. Mint signals grow the snake; amber noise shrinks it.</p>
-        <button id="start-game" class="restart-button" type="button">Start run →</button>
+      <section id="game-menu" class="game-menu" aria-label="Start Snake game">
+        <button id="start-game" class="restart-button" type="button">Start</button>
       </section>
 
       <section class="game-shell" aria-label="Snake game" hidden>
@@ -38,12 +35,6 @@
         <p id="game-message" class="game-message" aria-live="polite">RUN ACTIVE — collect the signals</p>
         <button id="restart-game" class="restart-button" type="button">Restart run ↻</button>
 
-        <div class="direction-pad" aria-label="Touch controls">
-          <button id="direction-up" type="button" aria-label="Move up">↑</button>
-          <button id="direction-left" type="button" aria-label="Move left">←</button>
-          <button id="direction-down" type="button" aria-label="Move down">↓</button>
-          <button id="direction-right" type="button" aria-label="Move right">→</button>
-        </div>
       </section>
 
       <section id="game-over" class="game-over" role="dialog" aria-modal="true" aria-labelledby="game-over-title" hidden>

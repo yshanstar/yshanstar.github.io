@@ -146,10 +146,6 @@ document.addEventListener('keydown', (event) => {
   requestDirection(direction);
 });
 
-document.querySelectorAll('.direction-pad button').forEach((button) => {
-  button.addEventListener('click', () => requestDirection(button.id.replace('direction-', '')));
-});
-
 let touchStart = null;
 let swipeResolved = false;
 

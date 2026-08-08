@@ -93,18 +93,17 @@ test('ships an accessible standalone Snake game page without touching the home p
   const [snake, home] = await Promise.all([readFile('snake.html', 'utf8'), readFile('index.html', 'utf8')]);
 
   assert.match(snake, /<canvas[^>]+id="game-board"[^>]+aria-label="Snake game board"/);
-  assert.match(snake, /<button[^>]+id="direction-up"[^>]+aria-label="Move up"/);
   assert.match(snake, /id="snake-score"/);
   assert.match(snake, /href="index\.html"/);
+  assert.doesNotMatch(snake, /direction-pad|direction-up/);
   assert.doesNotMatch(home, /id="game-board"|Snake game/);
 });
 
-test('includes responsive touch controls and module-based Snake behavior', async () => {
+test('includes swipe-based mobile input and module-based Snake behavior', async () => {
   const [css, js] = await Promise.all([readFile('snake.css', 'utf8'), readFile('snake.js', 'utf8')]);
 
   assert.match(css, /@media \(max-width: 760px\)/);
-  assert.match(css, /\.direction-pad/);
-  assert.match(css, /min-height: 44px/);
+  assert.doesNotMatch(css, /\.direction-pad/);
   assert.match(js, /keydown/);
   assert.match(js, /requestDirection/);
   assert.match(js, /requestAnimationFrame/);
@@ -125,6 +124,7 @@ test('links the home navigation to Snake and supplies accessible game modes', as
   assert.match(snake, /<h1 id="game-title">Snake<\/h1>/);
   assert.match(snake, /id="game-menu"/);
   assert.match(snake, /id="start-game"/);
+  assert.match(snake, /id="start-game"[^>]*>Start<\/button>/);
   assert.match(snake, /id="game-over"[^>]+role="dialog"[^>]+aria-modal="true"/);
   assert.match(snake, /id="play-again"/);
   assert.match(snake, /id="return-menu"/);
@@ -138,11 +138,11 @@ test('implements terminal mode and deliberate board swipe steering', async () =>
   }
 });
 
-test('styles the terminal overlay and thumb-friendly mobile controls', async () => {
+test('styles the terminal overlay and swipe-only mobile play', async () => {
   const css = await readFile('snake.css', 'utf8');
 
   assert.match(css, /\.game-over/);
   assert.match(css, /\.game-menu/);
-  assert.match(css, /min-width: 52px/);
   assert.match(css, /touch-action: pan-y/);
+  assert.doesNotMatch(css, /\.direction-pad/);
 });
