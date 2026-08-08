@@ -49,3 +49,18 @@ test('provides responsive, accessible Signal Architecture styling', async () => 
     assert.match(css, new RegExp(token.replace(/[()]/g, '\\$&')));
   }
 });
+
+test('keeps enhancements dependency-free and motion-aware', async () => {
+  const js = await readFile('script.js', 'utf8');
+
+  assert.match(js, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(js, /aria-expanded/);
+  assert.match(js, /IntersectionObserver/);
+  assert.doesNotMatch(js, /import |require\(/);
+});
+
+test('ships all final static assets', async () => {
+  await Promise.all(
+    ['index.html', 'styles.css', 'script.js', 'assets/profile.jpg', '404.html'].map((file) => access(file)),
+  );
+});
