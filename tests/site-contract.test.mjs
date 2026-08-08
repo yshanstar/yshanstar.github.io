@@ -186,3 +186,13 @@ test('renders a static board preview while the Snake menu is open', async () => 
   assert.match(js, /if \(mode === 'menu'\) \{[\s\S]*fitCanvas\(\);[\s\S]*draw\(\);/);
   assert.doesNotMatch(js, /shell\.hidden = mode === 'menu'/);
 });
+
+test('uses a software-engineering Security breach alert', async () => {
+  const [snake, css] = await Promise.all([readFile('snake.html', 'utf8'), readFile('snake.css', 'utf8')]);
+
+  assert.match(snake, /class="warning-symbol"[^>]*aria-hidden="true">⚠<\/span>/);
+  assert.match(snake, /ALERT \/ SECURITY BREACH/);
+  assert.match(snake, /<h2 id="game-over-title">Security breach<\/h2>/);
+  assert.match(css, /\.warning-symbol/);
+  assert.match(css, /color: var\(--warning\)/);
+});

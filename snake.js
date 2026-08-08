@@ -51,14 +51,14 @@ function draw() {
     context.stroke();
   }
 
-  if (state.item) {
-    const centerX = (state.item.x + .5) * unit;
-    const centerY = (state.item.y + .5) * unit;
-    context.fillStyle = state.item.type === 'good' ? '#44d7a8' : '#f6ce71';
+  state.items.forEach((item) => {
+    const centerX = (item.x + .5) * unit;
+    const centerY = (item.y + .5) * unit;
+    context.fillStyle = item.type === 'good' ? '#44d7a8' : '#f6ce71';
     context.beginPath();
     context.arc(centerX, centerY, unit * .24, 0, Math.PI * 2);
     context.fill();
-  }
+  });
 
   state.snake.forEach((cell, index) => {
     context.fillStyle = index === 0 ? '#e8f1fb' : '#44d7a8';
@@ -91,7 +91,7 @@ function scheduleTick() {
 }
 
 function tick() {
-  state = step(state);
+  state = step(state, Math.random, Date.now());
   draw();
   updateTelemetry();
   animateEffect(state.effect);
