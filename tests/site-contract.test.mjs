@@ -64,3 +64,11 @@ test('ships all final static assets', async () => {
     ['index.html', 'styles.css', 'script.js', 'assets/profile.jpg', '404.html'].map((file) => access(file)),
   );
 });
+
+test('documents GitHub Pages publishing', async () => {
+  const readme = await readFile('README.md', 'utf8');
+
+  assert.match(readme, /GitHub Pages/);
+  assert.match(readme, /Settings.*Pages|Settings → Pages/);
+  assert.match(readme, /npm test/);
+});
