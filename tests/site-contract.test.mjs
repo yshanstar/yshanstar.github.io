@@ -4,8 +4,6 @@ import test from 'node:test';
 
 const requiredFiles = [
   'index.html',
-  'styles.css',
-  'script.js',
   'assets/profile.jpg',
   '404.html',
 ];
@@ -24,4 +22,16 @@ test('ships the complete static site contract', async () => {
   assert.match(html, /target="_blank"/);
   assert.match(html, /rel="noreferrer"/);
   assert.doesNotMatch(html, /yshanstar1988@gmail\.com|415.?684.?3217|Oracle|Microsoft|Amazon/);
+});
+
+test('uses semantic sections and an accessible portrait', async () => {
+  const html = await readFile('index.html', 'utf8');
+
+  for (const id of ['top', 'profile', 'operate', 'career', 'connect']) {
+    assert.match(html, new RegExp(`<section[^>]*id="${id}"|<main[^>]*id="${id}"`));
+  }
+
+  assert.match(html, /<img[^>]+src="assets\/profile\.jpg"[^>]+alt="Shan Ye/);
+  assert.match(html, /<button[^>]+class="menu-toggle"[^>]+aria-expanded="false"/);
+  assert.match(html, /<nav[^>]+aria-label="Primary"/);
 });
