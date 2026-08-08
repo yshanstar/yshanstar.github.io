@@ -94,6 +94,9 @@ test('uses the original portrait as an engineering identity plate', async () => 
   assert.match(css, /\.identity-name/);
   assert.match(css, /\.identity-expertise[^}]*color: var\(--muted\)/s);
   assert.match(css, /\.identity-expertise__divider/);
+  assert.match(css, /\.identity-orbit[^}]*border: 1px solid var\(--muted\)/s);
+  assert.match(css, /\.identity-orbit::before[^}]*rgba\(157, 178, 199, \.72\)/s);
+  assert.match(css, /\.identity-plate figcaption[^}]*text-align: center/s);
 });
 
 test('provides responsive, accessible Signal Architecture styling', async () => {

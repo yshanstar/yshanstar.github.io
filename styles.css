@@ -81,8 +81,8 @@ h3 { font-size: 1.25rem; letter-spacing: -.02em; line-height: 1.25; }
 .button-outline:hover { background: var(--signal); color: var(--ink); }
 
 .identity-plate { margin: 0; position: relative; }
-.identity-orbit { aspect-ratio: 1; background: radial-gradient(circle at 50% 30%, var(--surface-raised), var(--ink) 72%); border: 1px solid var(--signal); border-radius: 50%; isolation: isolate; overflow: hidden; position: relative; }
-.identity-orbit::before { border: 1px solid rgba(68, 215, 168, .72); border-radius: 50%; content: ""; inset: 4%; pointer-events: none; position: absolute; z-index: 2; }
+.identity-orbit { aspect-ratio: 1; background: radial-gradient(circle at 50% 30%, var(--surface-raised), var(--ink) 72%); border: 1px solid var(--muted); border-radius: 50%; isolation: isolate; overflow: hidden; position: relative; }
+.identity-orbit::before { border: 1px solid rgba(157, 178, 199, .72); border-radius: 50%; content: ""; inset: 4%; pointer-events: none; position: absolute; z-index: 2; }
 .identity-orbit img { display: block; filter: contrast(1.04) saturate(.88); height: 100%; object-fit: cover; object-position: 50% 22%; width: 100%; }
 .identity-orbit::after { background: linear-gradient(transparent 40%, rgba(7, 17, 31, .82) 88%); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 1; }
 .identity-name { bottom: 18%; color: var(--text); font-family: var(--body); font-size: clamp(2.25rem, 4.8vw, 4.6rem); font-weight: 800; left: 0; letter-spacing: -.08em; line-height: .82; position: absolute; text-align: center; width: 100%; z-index: 4; }
@@ -90,7 +90,7 @@ h3 { font-size: 1.25rem; letter-spacing: -.02em; line-height: 1.25; }
 .identity-expertise__left { text-align: right; }
 .identity-expertise__divider { color: var(--muted); }
 .identity-expertise__right { text-align: left; }
-.identity-plate figcaption { border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; padding: .85rem .2rem .2rem; }
+.identity-plate figcaption { border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; padding: .85rem .2rem .2rem; text-align: center; }
 .identity-plate figcaption span { color: var(--signal); font-family: var(--mono); font-size: .6rem; margin-right: .6rem; }
 .sr-only { height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
