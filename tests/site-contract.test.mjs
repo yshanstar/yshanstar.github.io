@@ -17,7 +17,7 @@ test('ships the complete static site contract', async () => {
     assert.match(html, new RegExp(`href="${anchor}"|id="${anchor.slice(1)}"`));
   }
 
-  assert.match(html, /Building reliable cloud systems/);
+  assert.match(html, /Reliable cloud platforms at scale/);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/shanye\//);
   assert.match(html, /target="_blank"/);
   assert.match(html, /rel="noreferrer"/);
@@ -28,9 +28,9 @@ test('uses concise, clear display headlines', async () => {
   const html = await readFile('index.html', 'utf8');
 
   for (const headline of [
-    'Building reliable cloud systems',
-    'Systems that keep their promises',
-    'Scale. Ownership. Change',
+    'Reliable cloud platforms at scale',
+    'Foundations built to endure',
+    'Scale. Security. Direction',
     'Built for critical systems',
     'Let’s talk systems',
   ]) {
@@ -38,6 +38,31 @@ test('uses concise, clear display headlines', async () => {
   }
 
   assert.doesNotMatch(html, /Engineering systems that make cloud move\./);
+});
+
+test('presents public cloud expertise without product-specific details', async () => {
+  const html = await readFile('index.html', 'utf8');
+
+  for (const phrase of [
+    'secure, scalable cloud platforms',
+    'complex distributed systems',
+    'Security and isolation',
+    'Mentoring engineers',
+    'career growth',
+    'company strategy',
+  ]) {
+    assert.match(html, new RegExp(phrase));
+  }
+
+  assert.doesNotMatch(html, /tenancy|subscription|entitlement|commerce|lifecycle/i);
+});
+
+test('keeps Snake as the final highlighted navigation link', async () => {
+  const [html, css] = await Promise.all([readFile('index.html', 'utf8'), readFile('styles.css', 'utf8')]);
+
+  assert.match(html, /<a class="snake-nav-link" href="snake\.html">Snake<\/a>\s*<\/nav>/);
+  assert.match(css, /\.snake-nav-link/);
+  assert.match(css, /\.snake-nav-link[^}]*color: var\(--signal\)/s);
 });
 
 test('uses semantic sections and an accessible portrait', async () => {
@@ -120,7 +145,7 @@ test('documents the Snake route', async () => {
 test('links the home navigation to Snake and supplies accessible game modes', async () => {
   const [home, snake] = await Promise.all([readFile('index.html', 'utf8'), readFile('snake.html', 'utf8')]);
 
-  assert.match(home, /<a href="snake\.html">Snake<\/a>/);
+  assert.match(home, /<a class="snake-nav-link" href="snake\.html">Snake<\/a>/);
   assert.match(snake, /<h1 id="game-title">Snake<\/h1>/);
   assert.match(snake, /id="game-menu"/);
   assert.match(snake, /id="start-game"/);

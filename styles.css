@@ -55,6 +55,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--focus); outline
 .site-nav a::after { background: var(--signal); bottom: 5px; content: ""; height: 1px; left: 0; position: absolute; transform: scaleX(0); transform-origin: left; transition: transform .2s ease; width: 100%; }
 .site-nav a:hover, .site-nav a.is-active { color: var(--text); }
 .site-nav a:hover::after, .site-nav a.is-active::after { transform: scaleX(1); }
+.site-nav .snake-nav-link { color: var(--signal); text-shadow: 0 0 12px rgba(68, 215, 168, .45); }
+.site-nav .snake-nav-link::after { transform: scaleX(1); }
 
 .menu-toggle { background: transparent; border: 0; color: var(--text); cursor: pointer; display: none; font-size: .72rem; gap: .75rem; min-height: 44px; padding: 0; }
 
