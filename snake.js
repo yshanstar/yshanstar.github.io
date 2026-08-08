@@ -1,0 +1,132 @@
+import { INITIAL_INTERVAL, createGame, queueDirection, step } from './snake-engine.mjs';
+
+const canvas = document.querySelector('#game-board');
+const context = canvas.getContext('2d');
+const shell = document.querySelector('.game-shell');
+const scoreOutput = document.querySelector('#snake-score');
+const speedOutput = document.querySelector('#snake-speed');
+const statusOutput = document.querySelector('#snake-status');
+const message = document.querySelector('#game-message');
+const restartButton = document.querySelector('#restart-game');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let state = createGame();
+let timerId;
+let animationId;
+
+function cellSize() {
+  return canvas.getBoundingClientRect().width / state.gridSize;
+}
+
+function fitCanvas() {
+  const size = canvas.getBoundingClientRect().width;
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.round(size * ratio);
+  canvas.height = Math.round(size * ratio);
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function draw() {
+  const size = canvas.getBoundingClientRect().width;
+  const unit = cellSize();
+  context.clearRect(0, 0, size, size);
+  context.fillStyle = '#0d1c2e';
+  context.fillRect(0, 0, size, size);
+  context.strokeStyle = '#254866';
+  context.lineWidth = 1;
+
+  for (let index = 0; index <= state.gridSize; index += 1) {
+    const line = Math.round(index * unit) + .5;
+    context.beginPath();
+    context.moveTo(line, 0);
+    context.lineTo(line, size);
+    context.moveTo(0, line);
+    context.lineTo(size, line);
+    context.stroke();
+  }
+
+  if (state.item) {
+    const centerX = (state.item.x + .5) * unit;
+    const centerY = (state.item.y + .5) * unit;
+    context.fillStyle = state.item.type === 'good' ? '#44d7a8' : '#f6ce71';
+    context.beginPath();
+    context.arc(centerX, centerY, unit * .24, 0, Math.PI * 2);
+    context.fill();
+  }
+
+  state.snake.forEach((cell, index) => {
+    context.fillStyle = index === 0 ? '#e8f1fb' : '#44d7a8';
+    context.fillRect(cell.x * unit + 2, cell.y * unit + 2, unit - 4, unit - 4);
+  });
+}
+
+function updateTelemetry() {
+  scoreOutput.value = String(state.score).padStart(3, '0');
+  speedOutput.value = String(1 + Math.round((INITIAL_INTERVAL - state.interval) / 12)).padStart(2, '0');
+  statusOutput.value = state.status === 'terminated' ? 'ENDED' : 'RUN';
+  message.textContent = state.status === 'terminated'
+    ? 'RUN TERMINATED — restart when ready'
+    : 'RUN ACTIVE — collect the signals';
+}
+
+function animateEffect(effect) {
+  if (!effect || reduceMotion) return;
+  shell.classList.remove('effect-growth', 'effect-shrink');
+  cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(() => {
+    shell.classList.add(`effect-${effect}`);
+    window.setTimeout(() => shell.classList.remove(`effect-${effect}`), 420);
+  });
+}
+
+function scheduleTick() {
+  window.clearTimeout(timerId);
+  if (state.status === 'running') timerId = window.setTimeout(tick, state.interval);
+}
+
+function tick() {
+  state = step(state);
+  draw();
+  updateTelemetry();
+  animateEffect(state.effect);
+  scheduleTick();
+}
+
+function requestDirection(direction) {
+  state = queueDirection(state, direction);
+}
+
+function restart() {
+  state = createGame();
+  fitCanvas();
+  draw();
+  updateTelemetry();
+  scheduleTick();
+}
+
+const keyDirections = {
+  ArrowUp: 'up', w: 'up', W: 'up',
+  ArrowDown: 'down', s: 'down', S: 'down',
+  ArrowLeft: 'left', a: 'left', A: 'left',
+  ArrowRight: 'right', d: 'right', D: 'right',
+};
+
+document.addEventListener('keydown', (event) => {
+  const direction = keyDirections[event.key];
+  if (!direction || event.target.closest('input, textarea, select')) return;
+  event.preventDefault();
+  requestDirection(direction);
+});
+
+document.querySelectorAll('.direction-pad button').forEach((button) => {
+  button.addEventListener('click', () => requestDirection(button.id.replace('direction-', '')));
+});
+
+restartButton.addEventListener('click', restart);
+window.addEventListener('resize', () => {
+  fitCanvas();
+  draw();
+});
+
+window.__snakeGame = { get state() { return state; }, restart, requestDirection };
+restart();

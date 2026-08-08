@@ -98,3 +98,14 @@ test('ships an accessible standalone Snake game page without touching the home p
   assert.match(snake, /href="index\.html"/);
   assert.doesNotMatch(home, /snake\.html|Snake game/);
 });
+
+test('includes responsive touch controls and module-based Snake behavior', async () => {
+  const [css, js] = await Promise.all([readFile('snake.css', 'utf8'), readFile('snake.js', 'utf8')]);
+
+  assert.match(css, /@media \(max-width: 760px\)/);
+  assert.match(css, /\.direction-pad/);
+  assert.match(css, /min-height: 44px/);
+  assert.match(js, /keydown/);
+  assert.match(js, /requestDirection/);
+  assert.match(js, /requestAnimationFrame/);
+});
