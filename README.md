@@ -31,3 +31,11 @@ The test command uses only Node's built-in test runner; it does not download or 
 5. Save. GitHub Pages will publish the root-level static files without a build step.
 
 GitHub Pages can take a few minutes to make the site available. Subsequent pushes to the selected branch update the site automatically.
+
+## Snake arcade
+
+[`snake.html`](snake.html) is a standalone browser game route. Open it locally at [http://localhost:4173/snake.html](http://localhost:4173/snake.html), or visit `/snake.html` on the published site.
+
+- Steer with Arrow keys or W/A/S/D, or use the on-screen direction controls on mobile.
+- Mint items grow the snake; amber items shrink it but never below two segments.
+- The board wraps at every edge. Running into the snake ends the run; use **Restart run** to begin again.

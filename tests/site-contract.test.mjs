@@ -109,3 +109,11 @@ test('includes responsive touch controls and module-based Snake behavior', async
   assert.match(js, /requestDirection/);
   assert.match(js, /requestAnimationFrame/);
 });
+
+test('documents the Snake route', async () => {
+  const readme = await readFile('README.md', 'utf8');
+
+  assert.match(readme, /snake\.html/);
+  assert.match(readme, /Arrow keys/);
+  assert.match(readme, /W\/A\/S\/D/);
+});
