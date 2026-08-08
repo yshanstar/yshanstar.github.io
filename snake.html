@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A browser-playable Snake game by Shan Ye.">
+    <title>Snake // Arcade Terminal — Shan Ye</title>
+    <link rel="stylesheet" href="snake.css">
+    <script type="module" src="snake.js"></script>
+  </head>
+  <body>
+    <header class="game-header">
+      <a class="wordmark" href="index.html" aria-label="Return to Shan Ye's profile">SY<span>/</span>SYS</a>
+      <a class="back-link" href="index.html">← PROFILE</a>
+    </header>
+
+    <main>
+      <section class="game-intro" aria-labelledby="game-title">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> SYSTEM TEST / LIVE</p>
+        <h1 id="game-title">Snake <span>//</span> Arcade Terminal</h1>
+        <p>Collect mint signals to grow. Avoid amber noise or lose segments. Use Arrow keys or W/A/S/D to steer.</p>
+      </section>
+
+      <section class="game-shell" aria-label="Snake game">
+        <canvas id="game-board" width="800" height="800" role="img" aria-label="Snake game board">Your browser does not support the Snake game board.</canvas>
+        <div class="telemetry" aria-label="Game telemetry">
+          <div><span>SCORE</span><output id="snake-score">000</output></div>
+          <div><span>SPEED</span><output id="snake-speed">01</output></div>
+          <div><span>STATUS</span><output id="snake-status">READY</output></div>
+        </div>
+        <p id="game-message" class="game-message" aria-live="polite">RUN ACTIVE — collect the signals</p>
+        <button id="restart-game" class="restart-button" type="button">Restart run ↻</button>
+
+        <div class="direction-pad" aria-label="Touch controls">
+          <button id="direction-up" type="button" aria-label="Move up">↑</button>
+          <button id="direction-left" type="button" aria-label="Move left">←</button>
+          <button id="direction-down" type="button" aria-label="Move down">↓</button>
+          <button id="direction-right" type="button" aria-label="Move right">→</button>
+        </div>
+      </section>
+
+      <section class="game-notes" aria-label="Game rules">
+        <p><span>GOOD</span> +2 segments / +10 score</p>
+        <p><span>BAD</span> random shrink / minimum 2 segments</p>
+        <p><span>GRID</span> wraps in every direction</p>
+      </section>
+    </main>
+
+    <footer><span>SHAN YE / SYSTEMS NOTES</span><a href="index.html">Return to profile ↗</a></footer>
+  </body>
+</html>

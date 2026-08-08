@@ -88,3 +88,13 @@ test('documents GitHub Pages publishing', async () => {
   assert.match(readme, /Settings.*Pages|Settings → Pages/);
   assert.match(readme, /npm test/);
 });
+
+test('ships an accessible standalone Snake game page without touching the home page', async () => {
+  const [snake, home] = await Promise.all([readFile('snake.html', 'utf8'), readFile('index.html', 'utf8')]);
+
+  assert.match(snake, /<canvas[^>]+id="game-board"[^>]+aria-label="Snake game board"/);
+  assert.match(snake, /<button[^>]+id="direction-up"[^>]+aria-label="Move up"/);
+  assert.match(snake, /id="snake-score"/);
+  assert.match(snake, /href="index\.html"/);
+  assert.doesNotMatch(home, /snake\.html|Snake game/);
+});
