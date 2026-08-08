@@ -85,9 +85,11 @@ h3 { font-size: 1.25rem; letter-spacing: -.02em; line-height: 1.25; }
 .identity-orbit::before { border: 1px solid rgba(68, 215, 168, .72); border-radius: 50%; content: ""; inset: 4%; pointer-events: none; position: absolute; z-index: 2; }
 .identity-orbit img { display: block; filter: contrast(1.04) saturate(.88); height: 100%; object-fit: cover; object-position: 50% 22%; width: 100%; }
 .identity-orbit::after { background: linear-gradient(transparent 40%, rgba(7, 17, 31, .82) 88%); content: ""; inset: 0; pointer-events: none; position: absolute; z-index: 1; }
-.identity-arc { fill: var(--text); height: 100%; inset: 0; letter-spacing: .55px; pointer-events: none; position: absolute; width: 100%; z-index: 3; }
-.identity-arc text { font-family: var(--mono); font-size: 4px; }
-.identity-name { bottom: 10%; color: var(--text); font-family: var(--body); font-size: clamp(2.25rem, 4.8vw, 4.6rem); font-weight: 800; left: 0; letter-spacing: -.08em; line-height: .82; position: absolute; text-align: center; width: 100%; z-index: 4; }
+.identity-name { bottom: 18%; color: var(--text); font-family: var(--body); font-size: clamp(2.25rem, 4.8vw, 4.6rem); font-weight: 800; left: 0; letter-spacing: -.08em; line-height: .82; position: absolute; text-align: center; width: 100%; z-index: 4; }
+.identity-expertise { align-items: center; bottom: 11%; color: var(--muted); display: flex; font-family: var(--mono); font-size: clamp(.43rem, .82vw, .65rem); gap: .45rem; justify-content: center; letter-spacing: .035em; line-height: 1.2; padding: 0 8%; position: absolute; text-align: center; width: 100%; z-index: 4; }
+.identity-expertise__left { text-align: right; }
+.identity-expertise__divider { color: var(--muted); }
+.identity-expertise__right { text-align: left; }
 .identity-plate figcaption { border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; padding: .85rem .2rem .2rem; }
 .identity-plate figcaption span { color: var(--signal); font-family: var(--mono); font-size: .6rem; margin-right: .6rem; }
 .sr-only { height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); white-space: nowrap; }
@@ -134,6 +136,7 @@ footer a:hover { color: var(--signal); }
   .hero-copy { order: 1; }
   .identity-plate { max-width: min(100%, 32rem); order: 2; width: 100%; }
   .identity-name { font-size: clamp(2.35rem, 13vw, 4.5rem); }
+  .identity-expertise { bottom: 10%; font-size: clamp(.42rem, 2.1vw, .62rem); gap: .35rem; padding: 0 7%; }
   h1 { font-size: clamp(3.25rem, 15vw, 5.25rem); }
   .section-heading, .profile-facts, .signal-grid { grid-template-columns: 1fr; }
   .section-heading > p { margin-top: 0; }

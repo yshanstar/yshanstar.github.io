@@ -86,10 +86,14 @@ test('uses the original portrait as an engineering identity plate', async () => 
   assert.match(html, /class="identity-plate\b/);
   assert.match(html, /src="assets\/profile\.jpg"/);
   assert.match(html, /class="identity-name">SHAN YE<\/span>/);
-  assert.match(html, /DISTRIBUTED SYSTEMS \/ CLOUD INFRASTRUCTURE/);
-  assert.match(html, /<svg[^>]+aria-hidden="true"/);
+  assert.match(html, /class="identity-expertise"/);
+  assert.match(html, /class="identity-expertise__left">DISTRIBUTED SYSTEMS<\/span>/);
+  assert.match(html, /class="identity-expertise__right">CLOUD INFRASTRUCTURE<\/span>/);
+  assert.doesNotMatch(html, /class="identity-arc"/);
   assert.match(css, /\.identity-orbit[^}]*border-radius: 50%/s);
   assert.match(css, /\.identity-name/);
+  assert.match(css, /\.identity-expertise[^}]*color: var\(--muted\)/s);
+  assert.match(css, /\.identity-expertise__divider/);
 });
 
 test('provides responsive, accessible Signal Architecture styling', async () => {
