@@ -17,7 +17,7 @@ test('ships the complete static site contract', async () => {
     assert.match(html, new RegExp(`href="${anchor}"|id="${anchor.slice(1)}"`));
   }
 
-  assert.match(html, /Cloud platforms that\s*<span class="headline-accent">last<\/span>/);
+  assert.match(html, /Cloud Platforms That\s*<span class="headline-accent">Last<\/span>/);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/shanye\//);
   assert.match(html, /target="_blank"/);
   assert.match(html, /rel="noreferrer"/);
@@ -28,10 +28,10 @@ test('uses concise Engineering Editorial display headlines', async () => {
   const html = await readFile('index.html', 'utf8');
 
   for (const headline of [
-    'Cloud platforms that',
-    'Systems that',
+    'Cloud Platforms That',
+    'Systems That',
     'Security is architecture',
-    'Direction that',
+    'Direction That',
     'Let’s',
   ]) {
     assert.match(html, new RegExp(headline.replace(/[.]/g, '\\$&')));
@@ -53,7 +53,7 @@ test('uses an employer-neutral experience note and compact LinkedIn icon in the 
 test('uses accessible animated accents for the approved editorial key words', async () => {
   const [html, css] = await Promise.all([readFile('index.html', 'utf8'), readFile('styles.css', 'utf8')]);
 
-  for (const word of ['last', 'endure', 'scales', 'talk']) {
+  for (const word of ['Last', 'Endure', 'Scales', 'Talk']) {
     assert.match(html, new RegExp(`<span class="headline-accent">${word}</span>`));
   }
 
