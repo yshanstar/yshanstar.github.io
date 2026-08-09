@@ -17,27 +17,49 @@ test('ships the complete static site contract', async () => {
     assert.match(html, new RegExp(`href="${anchor}"|id="${anchor.slice(1)}"`));
   }
 
-  assert.match(html, /Reliable cloud platforms at scale/);
+  assert.match(html, /Cloud platforms that\s*<span class="headline-accent">last<\/span>/);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/shanye\//);
   assert.match(html, /target="_blank"/);
   assert.match(html, /rel="noreferrer"/);
   assert.doesNotMatch(html, /yshanstar1988@gmail\.com|415.?684.?3217|Oracle|Microsoft|Amazon/);
 });
 
-test('uses concise, clear display headlines', async () => {
+test('uses concise Engineering Editorial display headlines', async () => {
   const html = await readFile('index.html', 'utf8');
 
   for (const headline of [
-    'Reliable cloud platforms at scale',
-    'Foundations built to endure',
-    'Scale. Security. Direction',
-    'Built for critical systems',
-    'Let’s talk systems',
+    'Cloud platforms that',
+    'Systems that',
+    'Security is architecture',
+    'Direction that',
+    'Let’s',
   ]) {
     assert.match(html, new RegExp(headline.replace(/[.]/g, '\\$&')));
   }
 
   assert.doesNotMatch(html, /Engineering systems that make cloud move\./);
+});
+
+test('uses an employer-neutral experience note and compact LinkedIn icon in the hero', async () => {
+  const [html, css] = await Promise.all([readFile('index.html', 'utf8'), readFile('styles.css', 'utf8')]);
+
+  assert.match(html, /Experience across global cloud and enterprise platforms/);
+  assert.match(html, /class="hero-linkedin"[^>]+aria-label="Connect on LinkedIn"[^>]+href="https:\/\/www\.linkedin\.com\/in\/shanye\/"[^>]+target="_blank"[^>]+rel="noreferrer"/);
+  assert.match(html, /class="linkedin-icon"[^>]*viewBox="0 0 24 24"[^>]*aria-hidden="true"/);
+  assert.match(css, /\.hero-experience/);
+  assert.match(css, /\.hero-linkedin/);
+});
+
+test('uses accessible animated accents for the approved editorial key words', async () => {
+  const [html, css] = await Promise.all([readFile('index.html', 'utf8'), readFile('styles.css', 'utf8')]);
+
+  for (const word of ['last', 'endure', 'scales', 'talk']) {
+    assert.match(html, new RegExp(`<span class="headline-accent">${word}</span>`));
+  }
+
+  assert.match(css, /\.headline-accent[^}]*background-clip: text/s);
+  assert.match(css, /\.headline-accent[^}]*animation:/s);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.headline-accent[^}]*animation: none/s);
 });
 
 test('presents public cloud expertise without product-specific details', async () => {
@@ -57,12 +79,32 @@ test('presents public cloud expertise without product-specific details', async (
   assert.doesNotMatch(html, /tenancy|subscription|entitlement|commerce|lifecycle/i);
 });
 
-test('keeps Snake as the final highlighted navigation link', async () => {
+test('keeps Games as the final highlighted navigation group', async () => {
   const [html, css] = await Promise.all([readFile('index.html', 'utf8'), readFile('styles.css', 'utf8')]);
 
-  assert.match(html, /<a class="snake-nav-link" href="snake\.html">Snake<\/a>\s*<\/nav>/);
-  assert.match(css, /\.snake-nav-link/);
-  assert.match(css, /\.snake-nav-link[^}]*color: var\(--signal\)/s);
+  assert.match(html, /class="games-menu games-nav-link"/);
+  assert.match(html, /href="snake\.html">Snake<\/a>/);
+  assert.match(html, /href="tetris\.html">Tetris<\/a>/);
+  assert.match(css, /\.games-nav-link/);
+});
+
+test('groups game routes in an accessible desktop dropdown and mobile disclosure', async () => {
+  const [html, css, js] = await Promise.all([
+    readFile('index.html', 'utf8'),
+    readFile('styles.css', 'utf8'),
+    readFile('script.js', 'utf8'),
+  ]);
+
+  assert.match(html, /class="games-menu games-nav-link"/);
+  assert.match(html, /class="games-toggle"[^>]+type="button"[^>]+aria-controls="games-submenu"[^>]+aria-expanded="false"/);
+  assert.match(html, /<ul id="games-submenu" class="games-submenu"/);
+  assert.match(html, /href="snake\.html">Snake<\/a>/);
+  assert.match(html, /href="tetris\.html">Tetris<\/a>/);
+  assert.match(css, /\.games-menu:hover \.games-submenu/);
+  assert.match(css, /\.games-menu:focus-within \.games-submenu/);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*\.games-menu\.games-open \.games-submenu/s);
+  assert.match(js, /gamesToggle\.setAttribute\('aria-expanded'/);
+  assert.match(js, /gamesMenu\.classList\.toggle\('games-open'/);
 });
 
 test('uses semantic sections and an accessible portrait', async () => {
@@ -77,34 +119,38 @@ test('uses semantic sections and an accessible portrait', async () => {
   assert.match(html, /<nav[^>]+aria-label="Primary"/);
 });
 
-test('uses the original portrait as an engineering identity plate', async () => {
+test('uses the original portrait in the Engineering Editorial hero', async () => {
   const [html, css] = await Promise.all([
     readFile('index.html', 'utf8'),
     readFile('styles.css', 'utf8'),
   ]);
 
-  assert.match(html, /class="identity-plate\b/);
+  assert.match(html, /class="engineering-editorial\b/);
+  assert.match(html, /class="editorial-portrait\b/);
   assert.match(html, /src="assets\/profile\.jpg"/);
-  assert.match(html, /class="identity-name">SHAN YE<\/span>/);
-  assert.match(html, /class="identity-expertise"/);
-  assert.match(html, /class="identity-expertise__left">DISTRIBUTED SYSTEMS<\/span>/);
-  assert.match(html, /class="identity-expertise__right">CLOUD INFRASTRUCTURE<\/span>/);
-  assert.doesNotMatch(html, /class="identity-arc"/);
-  assert.match(css, /\.identity-orbit[^}]*border-radius: 50%/s);
-  assert.match(css, /\.identity-name/);
-  assert.match(css, /\.identity-expertise[^}]*color: var\(--muted\)/s);
-  assert.match(css, /\.identity-expertise__divider/);
-  assert.match(css, /\.identity-orbit[^}]*border: 1px solid var\(--muted\)/s);
-  assert.match(css, /\.identity-orbit::before[^}]*rgba\(157, 178, 199, \.72\)/s);
-  assert.match(css, /\.identity-plate figcaption[^}]*text-align: center/s);
+  assert.match(html, /class="editorial-name">SHAN YE<\/span>/);
+  assert.match(css, /\.portrait-circle[^}]*border-radius: 50%/s);
+  assert.match(css, /--canvas:/);
+  assert.match(css, /\.expertise-strip/);
 });
 
-test('provides responsive, accessible Signal Architecture styling', async () => {
+test('presents the approved three-part Engineering Editorial expertise strip', async () => {
+  const html = await readFile('index.html', 'utf8');
+
+  for (const label of ['DISTRIBUTED SYSTEMS', 'CLOUD INFRASTRUCTURE', 'TECHNICAL DIRECTION']) {
+    assert.match(html, new RegExp(label));
+  }
+
+  assert.match(html, /class="expertise-strip\b/);
+  assert.match(html, /class="games-menu games-nav-link"[\s\S]*href="snake\.html">Snake<\/a>[\s\S]*href="tetris\.html">Tetris<\/a>/);
+});
+
+test('provides responsive, accessible Engineering Editorial styling', async () => {
   const css = await readFile('styles.css', 'utf8');
 
   for (const token of [
     '--ink:',
-    '--signal:',
+    '--steel:',
     '@media (max-width:',
     '@media (prefers-reduced-motion: reduce)',
     ':focus-visible',
@@ -164,10 +210,11 @@ test('documents the Snake route', async () => {
   assert.match(readme, /W\/A\/S\/D/);
 });
 
-test('links the home navigation to Snake and supplies accessible game modes', async () => {
+test('links the home navigation to both games and supplies accessible game modes', async () => {
   const [home, snake] = await Promise.all([readFile('index.html', 'utf8'), readFile('snake.html', 'utf8')]);
 
-  assert.match(home, /<a class="snake-nav-link" href="snake\.html">Snake<\/a>/);
+  assert.match(home, /href="snake\.html">Snake<\/a>/);
+  assert.match(home, /href="tetris\.html">Tetris<\/a>/);
   assert.match(snake, /<h1 id="game-title">Snake<\/h1>/);
   assert.match(snake, /id="game-menu"/);
   assert.match(snake, /id="start-game"/);
