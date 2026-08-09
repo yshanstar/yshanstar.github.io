@@ -120,3 +120,10 @@ test('ends the game when the next piece cannot spawn', () => {
 
   assert.equal(next.status, 'terminated');
 });
+
+test('fills the queue from a shuffled seven-piece bag', () => {
+  const state = createGame({ random: () => 0 });
+  const sequence = [state.active.type, ...state.queue, ...state.bag];
+
+  assert.deepEqual([...sequence].sort(), ['I', 'J', 'L', 'O', 'S', 'T', 'Z']);
+});

@@ -17,8 +17,24 @@ const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 const emptyBoard = () => Array.from({ length: BOARD_HEIGHT }, () => Array(BOARD_WIDTH).fill(null));
 const copyBoard = (board) => board.map((row) => row.slice());
 const copyMatrix = (matrix) => matrix.map((row) => row.slice());
-const nextPieceType = (type) => PIECE_TYPES[(PIECE_TYPES.indexOf(type) + 1) % PIECE_TYPES.length];
 export const pieceMatrix = (type) => copyMatrix(PIECES[type]);
+const shuffledBag = (random) => {
+  const bag = PIECE_TYPES.slice();
+  for (let index = bag.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(random() * (index + 1));
+    [bag[index], bag[swap]] = [bag[swap], bag[index]];
+  }
+  return bag;
+};
+const fillQueue = (queue, bag, random) => {
+  const nextQueue = queue.slice();
+  let nextBag = bag.slice();
+  while (nextQueue.length < 3) {
+    if (!nextBag.length) nextBag = shuffledBag(random);
+    nextQueue.push(nextBag.shift());
+  }
+  return { queue: nextQueue, bag: nextBag };
+};
 
 function createActive(piece = {}) {
   const type = piece.type ?? 'T';
@@ -42,6 +58,7 @@ function copyState(state, changes = {}) {
     board: copyBoard(state.board),
     active: copyActive(state.active),
     clearingRows: state.clearingRows.slice(),
+    bag: state.bag.slice(),
     ...changes,
   };
 }
@@ -99,9 +116,9 @@ function lockAndSpawn(state) {
 
 function spawnNext(state) {
   const active = createActive({ type: state.queue[0] });
-  const queue = [...state.queue.slice(1), nextPieceType(state.queue[state.queue.length - 1])];
+  const filled = fillQueue(state.queue.slice(1), state.bag, state.random);
   const status = collides(state.board, active) ? 'terminated' : 'running';
-  return copyState(state, { active, queue, status });
+  return copyState(state, { active, queue: filled.queue, bag: filled.bag, status });
 }
 
 export function resolveClear(state) {
@@ -119,13 +136,18 @@ export function resolveClear(state) {
 }
 
 export function createGame(options = {}) {
-  const active = createActive(options.active);
-  const queue = options.queue ?? [options.next ?? 'I', 'J', 'L'];
+  const random = options.random ?? Math.random;
+  const initialQueue = options.queue ?? (options.next ? [options.next] : []);
+  const initial = fillQueue(initialQueue, options.bag ?? [], random);
+  const active = createActive(options.active ?? { type: initial.queue.shift() });
+  const filled = fillQueue(initial.queue, initial.bag, random);
 
   return {
     board: copyBoard(options.board ?? emptyBoard()),
     active,
-    queue: queue.slice(0, 3),
+    queue: filled.queue,
+    bag: filled.bag,
+    random,
     score: options.score ?? 0,
     lines: options.lines ?? 0,
     level: options.level ?? 1,
