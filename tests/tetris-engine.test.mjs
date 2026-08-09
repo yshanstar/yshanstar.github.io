@@ -103,6 +103,7 @@ test('increases the level after every ten cleared lines', () => {
 });
 
 test('caps gravity at 80 milliseconds for high levels', () => {
+  assert.equal(gravityInterval(createGame()), 550);
   assert.equal(gravityInterval(createGame({ level: 99 })), 80);
 });
 

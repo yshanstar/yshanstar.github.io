@@ -180,5 +180,5 @@ export function tick(state) {
 }
 
 export function gravityInterval(state) {
-  return Math.max(80, 800 - (state.level - 1) * 60);
+  return Math.max(80, 550 - (state.level - 1) * 40);
 }
